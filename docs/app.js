@@ -1,4 +1,9 @@
-const DATA_URL = "data/benchmark_summary.json";
+const DATA_URL = "data/multicohort_summary.json";
+
+const COHORT_LABELS = {
+  mcphases: "mcPHASES multimodal",
+  utah_cycle_length: "Utah history replication",
+};
 
 const METRICS = {
   mae: { label: "Mean absolute error", short: "MAE", unit: "days", better: "lower", digits: 2 },
@@ -31,6 +36,7 @@ const state = {
 };
 
 let benchmark;
+let multicohort;
 
 const svgNS = "http://www.w3.org/2000/svg";
 const el = (id) => document.getElementById(id);
@@ -87,6 +93,30 @@ function renderSummary() {
   el("protocol").textContent = `Protocol ${benchmark.protocol_version}`;
   const best = [...trainedScores()].sort((a, b) => a.mae - b.mae)[0];
   el("finding").textContent = `Lowest point MAE: ${best.model_label} with ${TRACK_LABELS[best.track].toLowerCase()} (${best.mae.toFixed(2)} days).`;
+}
+
+function selectCohort(cohortId) {
+  const selected = multicohort.cohorts.find((cohort) => cohort.dataset.id === cohortId);
+  if (!selected) return;
+  benchmark = selected;
+  state.tracks = new Set(Object.keys(benchmark.feature_counts_by_track));
+  renderSummary();
+  render();
+}
+
+function renderCohortControls() {
+  const control = el("cohort-control");
+  control.replaceChildren();
+  multicohort.cohorts.forEach((cohort) => {
+    const cohortId = cohort.dataset.id;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = COHORT_LABELS[cohortId] || cohortId;
+    button.className = cohortId === benchmark.dataset.id ? "active" : "";
+    button.setAttribute("aria-pressed", String(cohortId === benchmark.dataset.id));
+    button.addEventListener("click", () => selectCohort(cohortId));
+    control.appendChild(button);
+  });
 }
 
 function renderModelControls() {
@@ -291,6 +321,7 @@ function renderChartAndTable() {
 }
 
 function render() {
+  renderCohortControls();
   renderModelControls();
   renderTrackControls();
   renderChartAndTable();
@@ -330,8 +361,12 @@ async function initialize() {
   try {
     const response = await fetch(DATA_URL);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    benchmark = await response.json();
-    Object.keys(benchmark.feature_counts_by_track).forEach((track) => state.tracks.add(track));
+    multicohort = await response.json();
+    if (!Array.isArray(multicohort.cohorts) || !multicohort.cohorts.length) {
+      throw new Error("No cohort summaries found");
+    }
+    benchmark = multicohort.cohorts[0];
+    state.tracks = new Set(Object.keys(benchmark.feature_counts_by_track));
     renderSummary();
     bindControls();
     render();

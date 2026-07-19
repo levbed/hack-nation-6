@@ -140,15 +140,21 @@ def build_benchmark_summary(
         )
 
     payload = {
-        "benchmark": "mcPHASES CycleBench",
-        "protocol_version": "2.0",
-        "dataset_version": "1.0.0",
+        "benchmark": str(summary.get("benchmark", "mcPHASES CycleBench")),
+        "protocol_version": "2.1",
+        "dataset": {
+            "id": str(summary.get("dataset_id", "mcphases")),
+            "version": str(summary.get("dataset_version", "unknown")),
+            "doi": str(summary.get("dataset_doi", "")),
+        },
+        "dataset_version": str(summary.get("dataset_version", "unknown")),
         "task": "Predict the length in days of cycle t+1 using only information available before it begins.",
         "intended_use": "Exploratory research benchmark; not for diagnosis, fertility planning, treatment, or perimenopause prediction.",
         "cohort_flow": {
             "participants": int(summary["participants"]),
             "inferred_complete_cycles": int(summary["cycles"]),
             "eligible_examples": int(summary["eligible_examples"]),
+            "eligibility_exclusions": summary.get("exclusions", {}),
         },
         "target_distribution_days": {
             "minimum": min(target_values, default=math.nan),
@@ -195,14 +201,14 @@ def write_markdown_report(path: str | Path, payload: dict[str, Any]) -> None:
     cohort = payload["cohort_flow"]
     target = payload["target_distribution_days"]
     lines = [
-        "# mcPHASES CycleBench Report",
+        f"# {payload['benchmark']} Report",
         "",
         payload["task"],
         "",
         "## Cohort Flow",
         "",
         f"- Participants: {cohort['participants']}",
-        f"- Inferred complete cycles: {cohort['inferred_complete_cycles']}",
+        f"- Complete cycles: {cohort['inferred_complete_cycles']}",
         f"- Eligible source/target examples: {cohort['eligible_examples']}",
         f"- Target cycle length: {target['minimum']:.0f}-{target['maximum']:.0f} days "
         f"(median {target['median']:.1f}, IQR {target['q1']:.1f}-{target['q3']:.1f})",

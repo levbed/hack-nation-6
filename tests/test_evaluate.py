@@ -81,6 +81,9 @@ class EvaluationTests(unittest.TestCase):
         self.assertIn("history_plus_symptoms", tracks)
         self.assertIn("history_plus_glucose_stress", tracks)
 
+    def test_unavailable_multimodal_tracks_are_skipped(self) -> None:
+        self.assertEqual(set(feature_tracks(_evaluation_table())), {"history_only"})
+
     def test_participant_bootstrap_is_paired_by_participant(self) -> None:
         predictions = []
         for participant in ["A", "B", "C"]:

@@ -38,6 +38,10 @@
 
       <div class="controls" aria-label="Chart controls">
         <fieldset>
+          <legend>Cohort</legend>
+          <div class="segmented" id="cohort-control"></div>
+        </fieldset>
+        <fieldset>
           <legend>Model</legend>
           <div class="segmented" id="model-control"></div>
         </fieldset>
@@ -112,14 +116,18 @@
 
     <section class="limitations">
       <h2>Scope and limitations</h2>
-      <p>Cycle boundaries are inferred from self-report. The eligible cohort is small, modality coverage is unequal, and results have no external or prospective validation.</p>
+      <p>mcPHASES is small and has unequal modality coverage. Utah is larger but is history-only and selected participants with regular bleeding. The cohorts are evaluated independently and their absolute errors are not directly comparable.</p>
+      <p>This is an independent within-cohort replication, not prospective validation or a test of model transfer between cohorts.</p>
       <p>This is an exploratory research benchmark. It is not intended for diagnosis, fertility planning, treatment, individual guidance, or perimenopause prediction.</p>
     </section>
   </main>
 
   <footer>
     <span>mcPHASES CycleBench</span>
-    <a href="https://physionet.org/content/mcphases/1.0.0/">Dataset access</a>
+    <span class="footer-links">
+      <a href="https://physionet.org/content/mcphases/1.0.0/">mcPHASES</a>
+      <a href="https://doi.org/10.7278/S50d-4gxs-s4hj">Utah cohort</a>
+    </span>
   </footer>
 
   <script src="app.js" defer></script>

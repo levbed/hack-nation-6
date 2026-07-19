@@ -187,14 +187,15 @@ def feature_tracks(feature_table: FeatureTable) -> dict[str, list[str]]:
     hormones = feature_table.hormone_features
     symptoms = feature_table.symptom_features
     glucose_stress = feature_table.metabolic_stress_features
-    tracks = {
-        "history_only": history,
-        "history_plus_wearables": history + wearables,
-        "history_plus_hormones": history + hormones,
-        "full_multimodal": history + wearables + hormones + symptoms + glucose_stress,
-    }
+    tracks = {"history_only": history}
+    if wearables:
+        tracks["history_plus_wearables"] = history + wearables
+    if hormones:
+        tracks["history_plus_hormones"] = history + hormones
     if symptoms:
         tracks["history_plus_symptoms"] = history + symptoms
     if glucose_stress:
         tracks["history_plus_glucose_stress"] = history + glucose_stress
+    if wearables or hormones or symptoms or glucose_stress:
+        tracks["full_multimodal"] = history + wearables + hormones + symptoms + glucose_stress
     return tracks

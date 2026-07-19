@@ -1,0 +1,1076 @@
+{
+  "benchmark": "mcPHASES CycleBench",
+  "cohorts": [
+    {
+      "benchmark": "mcPHASES CycleBench",
+      "cohort_flow": {
+        "eligibility_exclusions": {},
+        "eligible_examples": 82,
+        "inferred_complete_cycles": 142,
+        "participants": 42
+      },
+      "dataset": {
+        "doi": "10.13026/zx6a-2c81",
+        "id": "mcphases",
+        "version": "1.0.0"
+      },
+      "dataset_version": "1.0.0",
+      "evaluation": {
+        "models": [
+          {
+            "id": "ridge",
+            "label": "Ridge",
+            "role": "primary linear analysis"
+          },
+          {
+            "id": "rbf_svr",
+            "label": "RBF-SVR",
+            "role": "nonlinear sensitivity analysis"
+          },
+          {
+            "id": "hist_gradient_boosting",
+            "label": "HistGradientBoosting",
+            "role": "nonlinear sensitivity analysis"
+          }
+        ],
+        "outer_folds": 5,
+        "outer_split": "participant-disjoint GroupKFold",
+        "selection_metric": "inner participant-disjoint GroupKFold MAE",
+        "uncertainty": "95% participant-clustered bootstrap intervals with 2,000 replicates"
+      },
+      "feature_counts_by_track": {
+        "full_multimodal": 125,
+        "history_only": 5,
+        "history_plus_glucose_stress": 15,
+        "history_plus_hormones": 20,
+        "history_plus_symptoms": 65,
+        "history_plus_wearables": 40
+      },
+      "intended_use": "Exploratory research benchmark; not for diagnosis, fertility planning, treatment, or perimenopause prediction.",
+      "protocol_version": "2.1",
+      "scores": [
+        {
+          "delta_mae_ci_high": 0.0,
+          "delta_mae_ci_low": 0.0,
+          "delta_mae_vs_history": 0.0,
+          "delta_mae_vs_ridge_ci_high": 0.0,
+          "delta_mae_vs_ridge_ci_low": 0.0,
+          "delta_mae_vs_ridge_same_track": 0.0,
+          "evidence": "reference",
+          "feature_count_max": 5,
+          "feature_count_min": 5,
+          "mae": 4.840667854503487,
+          "mae_ci_high": 6.230347757972496,
+          "mae_ci_low": 3.574816308178886,
+          "mean_signed_error": 0.5852992063286387,
+          "median_absolute_error": 3.2047733156557214,
+          "model": "ridge",
+          "model_label": "Ridge",
+          "n": 82,
+          "reference_model": "ridge",
+          "reference_track": "history_only",
+          "rmse": 6.671258540413555,
+          "selected_hyperparameters": [
+            "{\"alpha\":0.1}",
+            "{\"alpha\":1.0}",
+            "{\"alpha\":100.0}"
+          ],
+          "track": "history_only",
+          "within_3_days_pct": 47.5609756097561,
+          "within_7_days_pct": 76.82926829268293
+        },
+        {
+          "delta_mae_ci_high": 0.6488853919696838,
+          "delta_mae_ci_low": 0.001826244989375315,
+          "delta_mae_vs_history": 0.33389049643339597,
+          "delta_mae_vs_ridge_ci_high": 0.0,
+          "delta_mae_vs_ridge_ci_low": 0.0,
+          "delta_mae_vs_ridge_same_track": 0.0,
+          "evidence": "higher MAE than history in participant bootstrap",
+          "feature_count_max": 20,
+          "feature_count_min": 20,
+          "mae": 5.174558350936883,
+          "mae_ci_high": 6.586843664951199,
+          "mae_ci_low": 3.9085280708026504,
+          "mean_signed_error": 0.4753422867097004,
+          "median_absolute_error": 4.063405509595054,
+          "model": "ridge",
+          "model_label": "Ridge",
+          "n": 82,
+          "reference_model": "ridge",
+          "reference_track": "history_only",
+          "rmse": 6.822441192591156,
+          "selected_hyperparameters": [
+            "{\"alpha\":100.0}"
+          ],
+          "track": "history_plus_hormones",
+          "within_3_days_pct": 39.02439024390244,
+          "within_7_days_pct": 73.17073170731707
+        },
+        {
+          "delta_mae_ci_high": 0.8262594730290224,
+          "delta_mae_ci_low": 0.039101000852041365,
+          "delta_mae_vs_history": 0.3902827867845513,
+          "delta_mae_vs_ridge_ci_high": 0.0,
+          "delta_mae_vs_ridge_ci_low": 0.0,
+          "delta_mae_vs_ridge_same_track": 0.0,
+          "evidence": "higher MAE than history in participant bootstrap",
+          "feature_count_max": 15,
+          "feature_count_min": 15,
+          "mae": 5.230950641288039,
+          "mae_ci_high": 6.661700744468315,
+          "mae_ci_low": 3.9489568972450177,
+          "mean_signed_error": 0.4586616694709291,
+          "median_absolute_error": 4.029689799703068,
+          "model": "ridge",
+          "model_label": "Ridge",
+          "n": 82,
+          "reference_model": "ridge",
+          "reference_track": "history_only",
+          "rmse": 6.932169156040366,
+          "selected_hyperparameters": [
+            "{\"alpha\":100.0}"
+          ],
+          "track": "history_plus_glucose_stress",
+          "within_3_days_pct": 41.46341463414634,
+          "within_7_days_pct": 71.95121951219512
+        },
+        {
+          "delta_mae_ci_high": 0.8161029136846735,
+          "delta_mae_ci_low": 0.10356649555123558,
+          "delta_mae_vs_history": 0.43880620649271584,
+          "delta_mae_vs_ridge_ci_high": 0.0,
+          "delta_mae_vs_ridge_ci_low": 0.0,
+          "delta_mae_vs_ridge_same_track": 0.0,
+          "evidence": "higher MAE than history in participant bootstrap",
+          "feature_count_max": 65,
+          "feature_count_min": 65,
+          "mae": 5.279474060996203,
+          "mae_ci_high": 6.718067715044018,
+          "mae_ci_low": 3.9694954352957468,
+          "mean_signed_error": 0.3768530968092994,
+          "median_absolute_error": 3.9097170318980066,
+          "model": "ridge",
+          "model_label": "Ridge",
+          "n": 82,
+          "reference_model": "ridge",
+          "reference_track": "history_only",
+          "rmse": 6.963635386898423,
+          "selected_hyperparameters": [
+            "{\"alpha\":100.0}"
+          ],
+          "track": "history_plus_symptoms",
+          "within_3_days_pct": 39.02439024390244,
+          "within_7_days_pct": 74.39024390243902
+        },
+        {
+          "delta_mae_ci_high": 1.7238345762493954,
+          "delta_mae_ci_low": -0.3445905231453672,
+          "delta_mae_vs_history": 0.5510152263957817,
+          "delta_mae_vs_ridge_ci_high": 0.0,
+          "delta_mae_vs_ridge_ci_low": 0.0,
+          "delta_mae_vs_ridge_same_track": 0.0,
+          "evidence": "inconclusive versus history",
+          "feature_count_max": 40,
+          "feature_count_min": 40,
+          "mae": 5.391683080899269,
+          "mae_ci_high": 7.143384670482862,
+          "mae_ci_low": 3.863092054056562,
+          "mean_signed_error": 1.6601193887352685,
+          "median_absolute_error": 3.4151159423715516,
+          "model": "ridge",
+          "model_label": "Ridge",
+          "n": 82,
+          "reference_model": "ridge",
+          "reference_track": "history_only",
+          "rmse": 8.327942478763138,
+          "selected_hyperparameters": [
+            "{\"alpha\":10.0}",
+            "{\"alpha\":100.0}"
+          ],
+          "track": "history_plus_wearables",
+          "within_3_days_pct": 41.46341463414634,
+          "within_7_days_pct": 74.39024390243902
+        },
+        {
+          "delta_mae_ci_high": 2.163649953153632,
+          "delta_mae_ci_low": 0.11696586330123529,
+          "delta_mae_vs_history": 0.9939624883882816,
+          "delta_mae_vs_ridge_ci_high": 0.0,
+          "delta_mae_vs_ridge_ci_low": 0.0,
+          "delta_mae_vs_ridge_same_track": 0.0,
+          "evidence": "higher MAE than history in participant bootstrap",
+          "feature_count_max": 125,
+          "feature_count_min": 125,
+          "mae": 5.834630342891769,
+          "mae_ci_high": 7.513845690594769,
+          "mae_ci_low": 4.3775861644276315,
+          "mean_signed_error": 1.3608944609521554,
+          "median_absolute_error": 4.319799706047128,
+          "model": "ridge",
+          "model_label": "Ridge",
+          "n": 82,
+          "reference_model": "ridge",
+          "reference_track": "history_only",
+          "rmse": 8.389742080606023,
+          "selected_hyperparameters": [
+            "{\"alpha\":100.0}"
+          ],
+          "track": "full_multimodal",
+          "within_3_days_pct": 39.02439024390244,
+          "within_7_days_pct": 68.29268292682927
+        },
+        {
+          "delta_mae_ci_high": 0.0,
+          "delta_mae_ci_low": 0.0,
+          "delta_mae_vs_history": 0.0,
+          "delta_mae_vs_ridge_ci_high": 0.35781382553312036,
+          "delta_mae_vs_ridge_ci_low": -0.9745457979865547,
+          "delta_mae_vs_ridge_same_track": -0.30085838521504105,
+          "evidence": "reference",
+          "feature_count_max": 5,
+          "feature_count_min": 5,
+          "mae": 4.539809469288446,
+          "mae_ci_high": 6.025434373754348,
+          "mae_ci_low": 3.178023311972547,
+          "mean_signed_error": 0.8344265142757179,
+          "median_absolute_error": 3.0207065691613835,
+          "model": "rbf_svr",
+          "model_label": "RBF-SVR",
+          "n": 82,
+          "reference_model": "rbf_svr",
+          "reference_track": "history_only",
+          "rmse": 6.1939557669119765,
+          "selected_hyperparameters": [
+            "{\"C\":10.0,\"epsilon\":1.0,\"gamma\":\"scale\"}",
+            "{\"C\":10.0,\"epsilon\":3.0,\"gamma\":\"scale\"}",
+            "{\"C\":100.0,\"epsilon\":3.0,\"gamma\":\"scale\"}"
+          ],
+          "track": "history_only",
+          "within_3_days_pct": 48.78048780487805,
+          "within_7_days_pct": 79.26829268292683
+        },
+        {
+          "delta_mae_ci_high": 0.7147284227879637,
+          "delta_mae_ci_low": -0.22533145227556445,
+          "delta_mae_vs_history": 0.26102870087272034,
+          "delta_mae_vs_ridge_ci_high": 0.11482616919011007,
+          "delta_mae_vs_ridge_ci_low": -1.012665528655942,
+          "delta_mae_vs_ridge_same_track": -0.430112471126872,
+          "evidence": "inconclusive versus history",
+          "feature_count_max": 15,
+          "feature_count_min": 15,
+          "mae": 4.800838170161167,
+          "mae_ci_high": 6.309723339292855,
+          "mae_ci_low": 3.43264843009686,
+          "mean_signed_error": 1.2461990057099865,
+          "median_absolute_error": 3.523342536382133,
+          "model": "rbf_svr",
+          "model_label": "RBF-SVR",
+          "n": 82,
+          "reference_model": "rbf_svr",
+          "reference_track": "history_only",
+          "rmse": 6.5445362059020225,
+          "selected_hyperparameters": [
+            "{\"C\":1.0,\"epsilon\":1.0,\"gamma\":\"scale\"}",
+            "{\"C\":1.0,\"epsilon\":3.0,\"gamma\":\"scale\"}",
+            "{\"C\":10.0,\"epsilon\":1.0,\"gamma\":\"scale\"}"
+          ],
+          "track": "history_plus_glucose_stress",
+          "within_3_days_pct": 45.1219512195122,
+          "within_7_days_pct": 74.39024390243902
+        },
+        {
+          "delta_mae_ci_high": 0.7279473559468734,
+          "delta_mae_ci_low": -0.22800523888503826,
+          "delta_mae_vs_history": 0.2711882503228269,
+          "delta_mae_vs_ridge_ci_high": 0.17944182775655595,
+          "delta_mae_vs_ridge_ci_low": -1.7287615554526834,
+          "delta_mae_vs_ridge_same_track": -0.5806853612879959,
+          "evidence": "inconclusive versus history",
+          "feature_count_max": 40,
+          "feature_count_min": 40,
+          "mae": 4.810997719611273,
+          "mae_ci_high": 6.365196343026418,
+          "mae_ci_low": 3.400352167314235,
+          "mean_signed_error": 1.2089474580256103,
+          "median_absolute_error": 3.318016047834732,
+          "model": "rbf_svr",
+          "model_label": "RBF-SVR",
+          "n": 82,
+          "reference_model": "rbf_svr",
+          "reference_track": "history_only",
+          "rmse": 6.5127475590234845,
+          "selected_hyperparameters": [
+            "{\"C\":1.0,\"epsilon\":3.0,\"gamma\":\"scale\"}",
+            "{\"C\":10.0,\"epsilon\":1.0,\"gamma\":\"scale\"}",
+            "{\"C\":10.0,\"epsilon\":3.0,\"gamma\":\"scale\"}",
+            "{\"C\":100.0,\"epsilon\":3.0,\"gamma\":\"scale\"}"
+          ],
+          "track": "history_plus_wearables",
+          "within_3_days_pct": 46.34146341463415,
+          "within_7_days_pct": 75.60975609756098
+        },
+        {
+          "delta_mae_ci_high": 0.8363627782654269,
+          "delta_mae_ci_low": -0.1326384055181333,
+          "delta_mae_vs_history": 0.3588489309262357,
+          "delta_mae_vs_ridge_ci_high": 0.17173574709175057,
+          "delta_mae_vs_ridge_ci_low": -0.9892294495195598,
+          "delta_mae_vs_ridge_same_track": -0.3808156607815212,
+          "evidence": "inconclusive versus history",
+          "feature_count_max": 65,
+          "feature_count_min": 65,
+          "mae": 4.898658400214682,
+          "mae_ci_high": 6.413094625323891,
+          "mae_ci_low": 3.5250502480359724,
+          "mean_signed_error": 0.6067139502151704,
+          "median_absolute_error": 3.521093933147947,
+          "model": "rbf_svr",
+          "model_label": "RBF-SVR",
+          "n": 82,
+          "reference_model": "rbf_svr",
+          "reference_track": "history_only",
+          "rmse": 6.395550079600171,
+          "selected_hyperparameters": [
+            "{\"C\":10.0,\"epsilon\":1.0,\"gamma\":\"scale\"}",
+            "{\"C\":100.0,\"epsilon\":1.0,\"gamma\":\"scale\"}",
+            "{\"C\":100.0,\"epsilon\":3.0,\"gamma\":\"scale\"}"
+          ],
+          "track": "history_plus_symptoms",
+          "within_3_days_pct": 46.34146341463415,
+          "within_7_days_pct": 74.39024390243902
+        },
+        {
+          "delta_mae_ci_high": 0.9214348502838706,
+          "delta_mae_ci_low": -0.21226466720902282,
+          "delta_mae_vs_history": 0.37895945718070134,
+          "delta_mae_vs_ridge_ci_high": -0.17784958297671563,
+          "delta_mae_vs_ridge_ci_low": -2.0697585932466986,
+          "delta_mae_vs_ridge_same_track": -0.9158614164226213,
+          "evidence": "inconclusive versus history",
+          "feature_count_max": 125,
+          "feature_count_min": 125,
+          "mae": 4.918768926469148,
+          "mae_ci_high": 6.440374581440099,
+          "mae_ci_low": 3.4701341786014,
+          "mean_signed_error": 1.2101163945063467,
+          "median_absolute_error": 3.1076820480951177,
+          "model": "rbf_svr",
+          "model_label": "RBF-SVR",
+          "n": 82,
+          "reference_model": "rbf_svr",
+          "reference_track": "history_only",
+          "rmse": 6.715683546976753,
+          "selected_hyperparameters": [
+            "{\"C\":1.0,\"epsilon\":1.0,\"gamma\":\"scale\"}",
+            "{\"C\":1.0,\"epsilon\":3.0,\"gamma\":\"scale\"}",
+            "{\"C\":10.0,\"epsilon\":1.0,\"gamma\":\"scale\"}",
+            "{\"C\":10.0,\"epsilon\":3.0,\"gamma\":\"scale\"}"
+          ],
+          "track": "full_multimodal",
+          "within_3_days_pct": 47.5609756097561,
+          "within_7_days_pct": 76.82926829268293
+        },
+        {
+          "delta_mae_ci_high": 1.031640419323413,
+          "delta_mae_ci_low": -0.21754895315864087,
+          "delta_mae_vs_history": 0.41362820319765436,
+          "delta_mae_vs_ridge_ci_high": 0.49653990015850746,
+          "delta_mae_vs_ridge_ci_low": -0.8375062856853492,
+          "delta_mae_vs_ridge_same_track": -0.22112067845078265,
+          "evidence": "inconclusive versus history",
+          "feature_count_max": 20,
+          "feature_count_min": 20,
+          "mae": 4.953437672486101,
+          "mae_ci_high": 6.848603699092697,
+          "mae_ci_low": 3.3431214556294173,
+          "mean_signed_error": 1.5014182666914664,
+          "median_absolute_error": 3.2575770798256443,
+          "model": "rbf_svr",
+          "model_label": "RBF-SVR",
+          "n": 82,
+          "reference_model": "rbf_svr",
+          "reference_track": "history_only",
+          "rmse": 7.040979551809706,
+          "selected_hyperparameters": [
+            "{\"C\":1.0,\"epsilon\":1.0,\"gamma\":\"scale\"}",
+            "{\"C\":1.0,\"epsilon\":3.0,\"gamma\":\"scale\"}"
+          ],
+          "track": "history_plus_hormones",
+          "within_3_days_pct": 48.78048780487805,
+          "within_7_days_pct": 76.82926829268293
+        },
+        {
+          "delta_mae_ci_high": 0.0,
+          "delta_mae_ci_low": 0.0,
+          "delta_mae_vs_history": 0.0,
+          "delta_mae_vs_ridge_ci_high": 0.3344904951475405,
+          "delta_mae_vs_ridge_ci_low": -0.5640703959998773,
+          "delta_mae_vs_ridge_same_track": -0.10976268673911349,
+          "evidence": "reference",
+          "feature_count_max": 5,
+          "feature_count_min": 5,
+          "mae": 4.730905167764374,
+          "mae_ci_high": 6.044797054824077,
+          "mae_ci_low": 3.5055786402415987,
+          "mean_signed_error": 0.3449460352976811,
+          "median_absolute_error": 2.902143610692132,
+          "model": "hist_gradient_boosting",
+          "model_label": "HistGradientBoosting",
+          "n": 82,
+          "reference_model": "hist_gradient_boosting",
+          "reference_track": "history_only",
+          "rmse": 6.370226582939337,
+          "selected_hyperparameters": [
+            "{\"l2_regularization\":1.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":3,\"min_samples_leaf\":10}",
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":3,\"min_samples_leaf\":10}",
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":3,\"min_samples_leaf\":5}"
+          ],
+          "track": "history_only",
+          "within_3_days_pct": 51.21951219512195,
+          "within_7_days_pct": 69.51219512195122
+        },
+        {
+          "delta_mae_ci_high": 0.7127972209539328,
+          "delta_mae_ci_low": -0.20163978940262944,
+          "delta_mae_vs_history": 0.2828464519206504,
+          "delta_mae_vs_ridge_ci_high": 0.4210339908378644,
+          "delta_mae_vs_ridge_ci_low": -0.9174101143671695,
+          "delta_mae_vs_ridge_same_track": -0.2171990216030144,
+          "evidence": "inconclusive versus history",
+          "feature_count_max": 15,
+          "feature_count_min": 15,
+          "mae": 5.013751619685024,
+          "mae_ci_high": 6.2555424161182485,
+          "mae_ci_low": 3.7397951745796996,
+          "mean_signed_error": 0.6233576800792316,
+          "median_absolute_error": 4.270871107744121,
+          "model": "hist_gradient_boosting",
+          "model_label": "HistGradientBoosting",
+          "n": 82,
+          "reference_model": "hist_gradient_boosting",
+          "reference_track": "history_only",
+          "rmse": 6.576421404692423,
+          "selected_hyperparameters": [
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":3,\"min_samples_leaf\":5}",
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":7,\"min_samples_leaf\":5}"
+          ],
+          "track": "history_plus_glucose_stress",
+          "within_3_days_pct": 37.80487804878049,
+          "within_7_days_pct": 73.17073170731707
+        },
+        {
+          "delta_mae_ci_high": 0.7108752654307866,
+          "delta_mae_ci_low": 0.008336457316905646,
+          "delta_mae_vs_history": 0.36424927401157436,
+          "delta_mae_vs_ridge_ci_high": 0.3888377389843784,
+          "delta_mae_vs_ridge_ci_low": -0.5428699943304808,
+          "delta_mae_vs_ridge_same_track": -0.0794039091609351,
+          "evidence": "higher MAE than history in participant bootstrap",
+          "feature_count_max": 20,
+          "feature_count_min": 20,
+          "mae": 5.095154441775948,
+          "mae_ci_high": 6.492137884927702,
+          "mae_ci_low": 3.7785612700230313,
+          "mean_signed_error": 0.5451372186772016,
+          "median_absolute_error": 3.513633741488281,
+          "model": "hist_gradient_boosting",
+          "model_label": "HistGradientBoosting",
+          "n": 82,
+          "reference_model": "hist_gradient_boosting",
+          "reference_track": "history_only",
+          "rmse": 6.839668621645235,
+          "selected_hyperparameters": [
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":3,\"min_samples_leaf\":10}",
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":3,\"min_samples_leaf\":5}",
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":7,\"min_samples_leaf\":10}"
+          ],
+          "track": "history_plus_hormones",
+          "within_3_days_pct": 46.34146341463415,
+          "within_7_days_pct": 69.51219512195122
+        },
+        {
+          "delta_mae_ci_high": 1.0622590367105087,
+          "delta_mae_ci_low": 0.06116686890150383,
+          "delta_mae_vs_history": 0.5070119276890335,
+          "delta_mae_vs_ridge_ci_high": 0.800227025635062,
+          "delta_mae_vs_ridge_ci_low": -1.2809762424033195,
+          "delta_mae_vs_ridge_same_track": -0.15376598544586173,
+          "evidence": "higher MAE than history in participant bootstrap",
+          "feature_count_max": 40,
+          "feature_count_min": 40,
+          "mae": 5.237917095453407,
+          "mae_ci_high": 6.541736146867984,
+          "mae_ci_low": 4.002353155319174,
+          "mean_signed_error": 0.30155679248420975,
+          "median_absolute_error": 4.117019004053878,
+          "model": "hist_gradient_boosting",
+          "model_label": "HistGradientBoosting",
+          "n": 82,
+          "reference_model": "hist_gradient_boosting",
+          "reference_track": "history_only",
+          "rmse": 6.957734883704788,
+          "selected_hyperparameters": [
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":3,\"min_samples_leaf\":5}",
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":7,\"min_samples_leaf\":5}"
+          ],
+          "track": "history_plus_wearables",
+          "within_3_days_pct": 42.68292682926829,
+          "within_7_days_pct": 70.73170731707317
+        },
+        {
+          "delta_mae_ci_high": 0.9389809625419897,
+          "delta_mae_ci_low": 0.13601560935031184,
+          "delta_mae_vs_history": 0.5342663000740044,
+          "delta_mae_vs_ridge_ci_high": 0.5456777924044721,
+          "delta_mae_vs_ridge_ci_low": -0.5434717058163198,
+          "delta_mae_vs_ridge_same_track": -0.014302593157824894,
+          "evidence": "higher MAE than history in participant bootstrap",
+          "feature_count_max": 65,
+          "feature_count_min": 65,
+          "mae": 5.265171467838378,
+          "mae_ci_high": 6.695219967472197,
+          "mae_ci_low": 3.91740681679245,
+          "mean_signed_error": 0.3951073846762777,
+          "median_absolute_error": 3.7492636979367777,
+          "model": "hist_gradient_boosting",
+          "model_label": "HistGradientBoosting",
+          "n": 82,
+          "reference_model": "hist_gradient_boosting",
+          "reference_track": "history_only",
+          "rmse": 7.056617816055493,
+          "selected_hyperparameters": [
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":3,\"min_samples_leaf\":10}",
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":3,\"min_samples_leaf\":5}",
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":7,\"min_samples_leaf\":5}"
+          ],
+          "track": "history_plus_symptoms",
+          "within_3_days_pct": 43.90243902439025,
+          "within_7_days_pct": 75.60975609756098
+        },
+        {
+          "delta_mae_ci_high": 1.1825046989349581,
+          "delta_mae_ci_low": 0.16610691909821934,
+          "delta_mae_vs_history": 0.6522752904932423,
+          "delta_mae_vs_ridge_ci_high": 0.31594428807466407,
+          "delta_mae_vs_ridge_ci_low": -1.4714334216573934,
+          "delta_mae_vs_ridge_same_track": -0.4514498846341528,
+          "evidence": "higher MAE than history in participant bootstrap",
+          "feature_count_max": 125,
+          "feature_count_min": 125,
+          "mae": 5.383180458257616,
+          "mae_ci_high": 6.850152847467004,
+          "mae_ci_low": 4.064366249429461,
+          "mean_signed_error": 0.609706813099802,
+          "median_absolute_error": 4.100771678033368,
+          "model": "hist_gradient_boosting",
+          "model_label": "HistGradientBoosting",
+          "n": 82,
+          "reference_model": "hist_gradient_boosting",
+          "reference_track": "history_only",
+          "rmse": 7.12856709229161,
+          "selected_hyperparameters": [
+            "{\"l2_regularization\":1.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":3,\"min_samples_leaf\":10}",
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":3,\"min_samples_leaf\":10}",
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":3,\"min_samples_leaf\":5}",
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":7,\"min_samples_leaf\":5}"
+          ],
+          "track": "full_multimodal",
+          "within_3_days_pct": 39.02439024390244,
+          "within_7_days_pct": 71.95121951219512
+        },
+        {
+          "delta_mae_ci_high": 1.2353270913420848,
+          "delta_mae_ci_low": -0.3083733989738016,
+          "delta_mae_vs_history": 0.4520150723257812,
+          "delta_mae_vs_ridge_ci_high": 1.2353270913420848,
+          "delta_mae_vs_ridge_ci_low": -0.3083733989738016,
+          "delta_mae_vs_ridge_same_track": 0.4520150723257812,
+          "evidence": "inconclusive versus history",
+          "feature_count_max": 0,
+          "feature_count_min": 0,
+          "mae": 5.2926829268292686,
+          "mae_ci_high": 7.24414893617021,
+          "mae_ci_low": 3.6028676470588237,
+          "mean_signed_error": 1.6341463414634145,
+          "median_absolute_error": 4.0,
+          "model": "baseline",
+          "model_label": "Baseline",
+          "n": 82,
+          "reference_model": "ridge",
+          "reference_track": "history_only",
+          "rmse": 7.421130017167689,
+          "selected_hyperparameters": [],
+          "track": "global_median",
+          "within_3_days_pct": 48.78048780487805,
+          "within_7_days_pct": 78.04878048780488
+        },
+        {
+          "delta_mae_ci_high": 2.1066233826918426,
+          "delta_mae_ci_low": -0.5769305742610669,
+          "delta_mae_vs_history": 0.842258974764805,
+          "delta_mae_vs_ridge_ci_high": 2.1066233826918426,
+          "delta_mae_vs_ridge_ci_low": -0.5769305742610669,
+          "delta_mae_vs_ridge_same_track": 0.842258974764805,
+          "evidence": "inconclusive versus history",
+          "feature_count_max": 0,
+          "feature_count_min": 0,
+          "mae": 5.682926829268292,
+          "mae_ci_high": 7.2113430583501,
+          "mae_ci_low": 4.47234219269103,
+          "mean_signed_error": 0.926829268292683,
+          "median_absolute_error": 4.0,
+          "model": "baseline",
+          "model_label": "Baseline",
+          "n": 82,
+          "reference_model": "ridge",
+          "reference_track": "history_only",
+          "rmse": 8.212126666719401,
+          "selected_hyperparameters": [],
+          "track": "previous_cycle",
+          "within_3_days_pct": 42.68292682926829,
+          "within_7_days_pct": 70.73170731707317
+        }
+      ],
+      "source_cycle_coverage": {
+        "active_minutes": {
+          "examples_with_data": 82,
+          "mean": 0.978608779208797,
+          "median": 1.0
+        },
+        "glucose": {
+          "examples_with_data": 56,
+          "mean": 0.9211995364915881,
+          "median": 1.0
+        },
+        "hormone_e3g": {
+          "examples_with_data": 82,
+          "mean": 0.9806961256173836,
+          "median": 1.0
+        },
+        "hormone_lh": {
+          "examples_with_data": 82,
+          "mean": 0.9806961256173836,
+          "median": 1.0
+        },
+        "hormone_pdg": {
+          "examples_with_data": 25,
+          "mean": 0.9854214177978884,
+          "median": 1.0
+        },
+        "resting_heart_rate": {
+          "examples_with_data": 82,
+          "mean": 0.9981050656660413,
+          "median": 1.0
+        },
+        "selfreport_appetite": {
+          "examples_with_data": 59,
+          "mean": 0.9236313551711979,
+          "median": 0.9705882352941176
+        },
+        "selfreport_bloating": {
+          "examples_with_data": 59,
+          "mean": 0.9236313551711979,
+          "median": 0.9705882352941176
+        },
+        "selfreport_cramps": {
+          "examples_with_data": 59,
+          "mean": 0.9230663834197855,
+          "median": 0.9705882352941176
+        },
+        "selfreport_exercise_level": {
+          "examples_with_data": 59,
+          "mean": 0.9236313551711979,
+          "median": 0.9705882352941176
+        },
+        "selfreport_fatigue": {
+          "examples_with_data": 59,
+          "mean": 0.9236313551711979,
+          "median": 0.9705882352941176
+        },
+        "selfreport_food_cravings": {
+          "examples_with_data": 59,
+          "mean": 0.9230663834197855,
+          "median": 0.9705882352941176
+        },
+        "selfreport_headaches": {
+          "examples_with_data": 59,
+          "mean": 0.9230663834197855,
+          "median": 0.9705882352941176
+        },
+        "selfreport_indigestion": {
+          "examples_with_data": 59,
+          "mean": 0.9225014116683731,
+          "median": 0.9705882352941176
+        },
+        "selfreport_mood_swing": {
+          "examples_with_data": 57,
+          "mean": 0.9532129621752555,
+          "median": 0.9714285714285714
+        },
+        "selfreport_sleep_issue": {
+          "examples_with_data": 59,
+          "mean": 0.9236313551711979,
+          "median": 0.9705882352941176
+        },
+        "selfreport_sore_breasts": {
+          "examples_with_data": 59,
+          "mean": 0.9230663834197855,
+          "median": 0.9705882352941176
+        },
+        "selfreport_stress": {
+          "examples_with_data": 59,
+          "mean": 0.9236313551711979,
+          "median": 0.9705882352941176
+        },
+        "sleep_efficiency": {
+          "examples_with_data": 82,
+          "mean": 0.9784919913993486,
+          "median": 1.0
+        },
+        "sleep_minutes_asleep": {
+          "examples_with_data": 82,
+          "mean": 0.9784919913993486,
+          "median": 1.0
+        },
+        "sleep_minutes_awake": {
+          "examples_with_data": 82,
+          "mean": 0.9784919913993486,
+          "median": 1.0
+        },
+        "sleep_time_in_bed": {
+          "examples_with_data": 82,
+          "mean": 0.9784919913993486,
+          "median": 1.0
+        },
+        "steps": {
+          "examples_with_data": 82,
+          "mean": 0.9961230262378038,
+          "median": 1.0
+        },
+        "wearable_stress_score": {
+          "examples_with_data": 67,
+          "mean": 0.9274710205175417,
+          "median": 1.0
+        }
+      },
+      "target_distribution_days": {
+        "maximum": 37.0,
+        "median": 28.0,
+        "minimum": 10.0,
+        "q1": 24.25,
+        "q3": 31.0
+      },
+      "task": "Predict the length in days of cycle t+1 using only information available before it begins.",
+      "variables_used": {
+        "glucose_stress": [
+          "glucose",
+          "wearable_stress_score"
+        ],
+        "hormones": [
+          "hormone_e3g",
+          "hormone_lh",
+          "hormone_pdg"
+        ],
+        "symptoms": [
+          "selfreport_appetite",
+          "selfreport_bloating",
+          "selfreport_cramps",
+          "selfreport_exercise_level",
+          "selfreport_fatigue",
+          "selfreport_food_cravings",
+          "selfreport_headaches",
+          "selfreport_indigestion",
+          "selfreport_mood_swing",
+          "selfreport_sleep_issue",
+          "selfreport_sore_breasts",
+          "selfreport_stress"
+        ],
+        "wearables": [
+          "active_minutes",
+          "resting_heart_rate",
+          "sleep_efficiency",
+          "sleep_minutes_asleep",
+          "sleep_minutes_awake",
+          "sleep_time_in_bed",
+          "steps"
+        ]
+      }
+    },
+    {
+      "benchmark": "mcPHASES CycleBench: Utah history replication",
+      "cohort_flow": {
+        "eligibility_exclusions": {
+          "adjacent_row_transitions": 2743,
+          "connected_pairs_outside_length_range": 3,
+          "connected_pairs_with_missing_length": 145,
+          "cycles_missing_length": 180,
+          "cycles_outside_length_range": 3,
+          "nonconsecutive_transitions": 187
+        },
+        "eligible_examples": 2408,
+        "inferred_complete_cycles": 3144,
+        "participants": 581
+      },
+      "dataset": {
+        "doi": "10.7278/S50d-4gxs-s4hj",
+        "id": "utah_cycle_length",
+        "version": "repository record accessed by pinned checksum"
+      },
+      "dataset_version": "repository record accessed by pinned checksum",
+      "evaluation": {
+        "models": [
+          {
+            "id": "ridge",
+            "label": "Ridge",
+            "role": "primary linear analysis"
+          },
+          {
+            "id": "rbf_svr",
+            "label": "RBF-SVR",
+            "role": "nonlinear sensitivity analysis"
+          },
+          {
+            "id": "hist_gradient_boosting",
+            "label": "HistGradientBoosting",
+            "role": "nonlinear sensitivity analysis"
+          }
+        ],
+        "outer_folds": 5,
+        "outer_split": "participant-disjoint GroupKFold",
+        "selection_metric": "inner participant-disjoint GroupKFold MAE",
+        "uncertainty": "95% participant-clustered bootstrap intervals with 2,000 replicates"
+      },
+      "feature_counts_by_track": {
+        "history_only": 5
+      },
+      "intended_use": "Exploratory research benchmark; not for diagnosis, fertility planning, treatment, or perimenopause prediction.",
+      "protocol_version": "2.1",
+      "scores": [
+        {
+          "delta_mae_ci_high": 0.0,
+          "delta_mae_ci_low": 0.0,
+          "delta_mae_vs_history": 0.0,
+          "delta_mae_vs_ridge_ci_high": 0.0,
+          "delta_mae_vs_ridge_ci_low": 0.0,
+          "delta_mae_vs_ridge_same_track": 0.0,
+          "evidence": "reference",
+          "feature_count_max": 5,
+          "feature_count_min": 5,
+          "mae": 2.965067442551997,
+          "mae_ci_high": 3.21448169127888,
+          "mae_ci_low": 2.735972931421441,
+          "mean_signed_error": 0.026923853060308072,
+          "median_absolute_error": 1.8907585592383498,
+          "model": "ridge",
+          "model_label": "Ridge",
+          "n": 2408,
+          "reference_model": "ridge",
+          "reference_track": "history_only",
+          "rmse": 5.256506802627072,
+          "selected_hyperparameters": [
+            "{\"alpha\":100.0}"
+          ],
+          "track": "history_only",
+          "within_3_days_pct": 69.93355481727575,
+          "within_7_days_pct": 92.56644518272425
+        },
+        {
+          "delta_mae_ci_high": 0.0,
+          "delta_mae_ci_low": 0.0,
+          "delta_mae_vs_history": 0.0,
+          "delta_mae_vs_ridge_ci_high": -0.022791518594691612,
+          "delta_mae_vs_ridge_ci_low": -0.16146800576850423,
+          "delta_mae_vs_ridge_same_track": -0.09073482394910615,
+          "evidence": "reference",
+          "feature_count_max": 5,
+          "feature_count_min": 5,
+          "mae": 2.874332618602891,
+          "mae_ci_high": 3.1302643757462945,
+          "mae_ci_low": 2.6309169992688077,
+          "mean_signed_error": -0.7442342950860731,
+          "median_absolute_error": 1.660260339514835,
+          "model": "rbf_svr",
+          "model_label": "RBF-SVR",
+          "n": 2408,
+          "reference_model": "rbf_svr",
+          "reference_track": "history_only",
+          "rmse": 5.297204158207005,
+          "selected_hyperparameters": [
+            "{\"C\":1.0,\"epsilon\":1.0,\"gamma\":\"scale\"}",
+            "{\"C\":10.0,\"epsilon\":1.0,\"gamma\":\"scale\"}"
+          ],
+          "track": "history_only",
+          "within_3_days_pct": 71.92691029900332,
+          "within_7_days_pct": 92.48338870431894
+        },
+        {
+          "delta_mae_ci_high": 0.0,
+          "delta_mae_ci_low": 0.0,
+          "delta_mae_vs_history": 0.0,
+          "delta_mae_vs_ridge_ci_high": 0.026472354902889787,
+          "delta_mae_vs_ridge_ci_low": -0.07459251279799306,
+          "delta_mae_vs_ridge_same_track": -0.02260874299248039,
+          "evidence": "reference",
+          "feature_count_max": 5,
+          "feature_count_min": 5,
+          "mae": 2.9424586995595168,
+          "mae_ci_high": 3.181632959350551,
+          "mae_ci_low": 2.7089414326769683,
+          "mean_signed_error": 0.029389559548114202,
+          "median_absolute_error": 1.8306018955035182,
+          "model": "hist_gradient_boosting",
+          "model_label": "HistGradientBoosting",
+          "n": 2408,
+          "reference_model": "hist_gradient_boosting",
+          "reference_track": "history_only",
+          "rmse": 5.145707658403116,
+          "selected_hyperparameters": [
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":3,\"min_samples_leaf\":10}",
+            "{\"l2_regularization\":10.0,\"learning_rate\":0.05,\"max_iter\":150,\"max_leaf_nodes\":3,\"min_samples_leaf\":5}"
+          ],
+          "track": "history_only",
+          "within_3_days_pct": 69.43521594684385,
+          "within_7_days_pct": 92.10963455149502
+        },
+        {
+          "delta_mae_ci_high": 0.5969737693426324,
+          "delta_mae_ci_low": 0.39802393981796996,
+          "delta_mae_vs_history": 0.49672657738155745,
+          "delta_mae_vs_ridge_ci_high": 0.5969737693426324,
+          "delta_mae_vs_ridge_ci_low": 0.39802393981796996,
+          "delta_mae_vs_ridge_same_track": 0.49672657738155745,
+          "evidence": "higher MAE than history in participant bootstrap",
+          "feature_count_max": 0,
+          "feature_count_min": 0,
+          "mae": 3.4617940199335546,
+          "mae_ci_high": 3.7597266254524317,
+          "mae_ci_low": 3.184740156782119,
+          "mean_signed_error": -0.046511627906976744,
+          "median_absolute_error": 2.0,
+          "model": "baseline",
+          "model_label": "Baseline",
+          "n": 2408,
+          "reference_model": "ridge",
+          "reference_track": "history_only",
+          "rmse": 6.03973553358213,
+          "selected_hyperparameters": [],
+          "track": "previous_cycle",
+          "within_3_days_pct": 69.55980066445183,
+          "within_7_days_pct": 90.49003322259136
+        },
+        {
+          "delta_mae_ci_high": 0.7532915159886615,
+          "delta_mae_ci_low": 0.4230513357402929,
+          "delta_mae_vs_history": 0.5864275740592984,
+          "delta_mae_vs_ridge_ci_high": 0.7532915159886615,
+          "delta_mae_vs_ridge_ci_low": 0.4230513357402929,
+          "delta_mae_vs_ridge_same_track": 0.5864275740592984,
+          "evidence": "higher MAE than history in participant bootstrap",
+          "feature_count_max": 0,
+          "feature_count_min": 0,
+          "mae": 3.5514950166112955,
+          "mae_ci_high": 3.8819319016826133,
+          "mae_ci_low": 3.2420434994502285,
+          "mean_signed_error": -1.0838870431893688,
+          "median_absolute_error": 2.0,
+          "model": "baseline",
+          "model_label": "Baseline",
+          "n": 2408,
+          "reference_model": "ridge",
+          "reference_track": "history_only",
+          "rmse": 6.329215599082383,
+          "selected_hyperparameters": [],
+          "track": "global_median",
+          "within_3_days_pct": 68.8953488372093,
+          "within_7_days_pct": 91.2375415282392
+        }
+      ],
+      "source_cycle_coverage": {},
+      "target_distribution_days": {
+        "maximum": 88.0,
+        "median": 29.0,
+        "minimum": 15.0,
+        "q1": 27.0,
+        "q3": 32.0
+      },
+      "task": "Predict the length in days of cycle t+1 using only information available before it begins.",
+      "variables_used": {}
+    }
+  ],
+  "comparison": "Independent within-cohort participant-disjoint evaluation; models are not pooled across cohorts.",
+  "macro_scores": [
+    {
+      "cohort_count": 2,
+      "cohorts": "mcphases;utah_cycle_length",
+      "macro_mae": 4.422088971720282,
+      "macro_mean_signed_error": 0.27512964913702287,
+      "macro_median_absolute_error": 3.0,
+      "macro_rmse": 6.875172808125036,
+      "macro_within_3_days_pct": 58.837918321043674,
+      "macro_within_7_days_pct": 84.64316100802205,
+      "model": "baseline",
+      "model_label": "Baseline",
+      "total_examples": 2490,
+      "track": "global_median"
+    },
+    {
+      "cohort_count": 2,
+      "cohorts": "mcphases;utah_cycle_length",
+      "macro_mae": 4.572360424600923,
+      "macro_mean_signed_error": 0.44015882019285313,
+      "macro_median_absolute_error": 3.0,
+      "macro_rmse": 7.1259311001507655,
+      "macro_within_3_days_pct": 56.121363746860055,
+      "macro_within_7_days_pct": 80.61087026983228,
+      "model": "baseline",
+      "model_label": "Baseline",
+      "total_examples": 2490,
+      "track": "previous_cycle"
+    },
+    {
+      "cohort_count": 2,
+      "cohorts": "mcphases;utah_cycle_length",
+      "macro_mae": 3.8366819336619455,
+      "macro_mean_signed_error": 0.18716779742289763,
+      "macro_median_absolute_error": 2.366372753097825,
+      "macro_rmse": 5.757967120671227,
+      "macro_within_3_days_pct": 60.3273640709829,
+      "macro_within_7_days_pct": 80.81091483672313,
+      "model": "hist_gradient_boosting",
+      "model_label": "HistGradientBoosting",
+      "total_examples": 2490,
+      "track": "history_only"
+    },
+    {
+      "cohort_count": 2,
+      "cohorts": "mcphases;utah_cycle_length",
+      "macro_mae": 3.7070710439456684,
+      "macro_mean_signed_error": 0.04509610959482241,
+      "macro_median_absolute_error": 2.3404834543381092,
+      "macro_rmse": 5.745579962559491,
+      "macro_within_3_days_pct": 60.35369905194069,
+      "macro_within_7_days_pct": 85.87584069362288,
+      "model": "rbf_svr",
+      "model_label": "RBF-SVR",
+      "total_examples": 2490,
+      "track": "history_only"
+    },
+    {
+      "cohort_count": 2,
+      "cohorts": "mcphases;utah_cycle_length",
+      "macro_mae": 3.9028676485277423,
+      "macro_mean_signed_error": 0.3061115296944734,
+      "macro_median_absolute_error": 2.5477659374470356,
+      "macro_rmse": 5.963882671520313,
+      "macro_within_3_days_pct": 58.747265213515924,
+      "macro_within_7_days_pct": 84.69785673770359,
+      "model": "ridge",
+      "model_label": "Ridge",
+      "total_examples": 2490,
+      "track": "history_only"
+    }
+  ],
+  "protocol_version": "2.1"
+}

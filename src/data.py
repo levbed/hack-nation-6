@@ -378,6 +378,10 @@ def summarize_loaded_data(loaded: LoadedData, examples: list[CycleExample]) -> d
     cycle_count = sum(max(0, len(group_starts) - 1) for group_starts in starts.values())
     used_variables = sorted({metric for values in loaded.tables_used.values() for metric in values})
     return {
+        "benchmark": "mcPHASES CycleBench",
+        "dataset_id": "mcphases",
+        "dataset_version": "1.0.0",
+        "dataset_doi": "10.13026/zx6a-2c81",
         "participants": len(participants),
         "cycles": cycle_count,
         "eligible_examples": len(examples),

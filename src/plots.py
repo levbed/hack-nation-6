@@ -63,6 +63,12 @@ def save_delta_mae_vs_history(path: str | Path, scores: list[dict[str, Any]]) ->
     positions = list(range(len(selected)))
 
     plt.figure(figsize=(9.5, max(4.8, 0.62 * len(selected))))
+    if not selected:
+        plt.text(0.5, 0.5, "No optional feature tracks available", ha="center", va="center")
+        plt.axis("off")
+        plt.title("Incremental value over history-only")
+        _finish(path)
+        return
     colors = ["#2A9D8F" if value < 0 else "#E76F51" for value in values]
     plt.barh(positions, values, color=colors, alpha=0.9)
     plt.errorbar(values, positions, xerr=[lower, upper], fmt="none", ecolor="#20242A", capsize=3, linewidth=1.2)
@@ -82,7 +88,15 @@ def save_predicted_vs_observed(path: str | Path, predictions: list[dict[str, Any
         if row["model"] == "ridge" and row["track"] == "full_multimodal"
     ]
     if not selected:
-        selected = predictions
+        selected = [
+            row for row in predictions
+            if row["model"] == "ridge" and row["track"] == "history_only"
+        ]
+    title = (
+        "Ridge full multimodal: predicted vs observed"
+        if selected and selected[0]["track"] == "full_multimodal"
+        else "Ridge history-only: predicted vs observed"
+    )
     observed = [float(row["observed_cycle_length"]) for row in selected]
     predicted = [float(row["predicted_cycle_length"]) for row in selected]
     minimum = min(observed + predicted, default=10.0) - 2
@@ -95,7 +109,7 @@ def save_predicted_vs_observed(path: str | Path, predictions: list[dict[str, Any
     plt.ylim(minimum, maximum)
     plt.xlabel("Observed cycle length (days)")
     plt.ylabel("Predicted cycle length (days)")
-    plt.title("Ridge full multimodal: predicted vs observed")
+    plt.title(title)
     plt.grid(color="#D9DEE3", linewidth=0.7)
     plt.legend(frameon=False)
     _finish(path)

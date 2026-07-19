@@ -1,9 +1,15 @@
 {
   "benchmark": "mcPHASES CycleBench",
   "cohort_flow": {
+    "eligibility_exclusions": {},
     "eligible_examples": 82,
     "inferred_complete_cycles": 142,
     "participants": 42
+  },
+  "dataset": {
+    "doi": "10.13026/zx6a-2c81",
+    "id": "mcphases",
+    "version": "1.0.0"
   },
   "dataset_version": "1.0.0",
   "evaluation": {
@@ -38,7 +44,7 @@
     "history_plus_wearables": 40
   },
   "intended_use": "Exploratory research benchmark; not for diagnosis, fertility planning, treatment, or perimenopause prediction.",
-  "protocol_version": "2.0",
+  "protocol_version": "2.1",
   "scores": [
     {
       "delta_mae_ci_high": 0.0,

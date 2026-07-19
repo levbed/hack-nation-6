@@ -4,6 +4,15 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from src.cohorts import (
+    UTAH_RECORD_URL,
+    add_cohort,
+    build_macro_scores,
+    build_utah_cycle_examples,
+    download_utah_data,
+    load_utah_data,
+    summarize_utah_data,
+)
 from src.data import (
     DEFAULT_MAX_CYCLE_LENGTH,
     DEFAULT_MIN_CYCLE_LENGTH,
@@ -24,9 +33,14 @@ from src.report import build_benchmark_summary, write_json, write_markdown_repor
 
 
 def _print_summary(summary: dict) -> None:
+    print(f"Dataset: {summary.get('dataset_id', 'mcphases')}")
     print(f"Participants: {summary['participants']}")
-    print(f"Inferred complete cycles: {summary['cycles']}")
+    print(f"Complete cycles: {summary['cycles']}")
     print(f"Eligible source/target examples: {summary['eligible_examples']}")
+    if summary.get("exclusions"):
+        print("Eligibility flow:")
+        for label, count in summary["exclusions"].items():
+            print(f"  - {label}: {count}")
     print("Tables inspected:")
     for table, rows in sorted(summary["table_rows"].items()):
         detail = f"{rows} rows" if rows is not None else "schema only; row count skipped"
@@ -51,6 +65,23 @@ def _load_and_build(args: argparse.Namespace):
     return loaded, examples, feature_table, summary
 
 
+def _load_utah_and_build(args: argparse.Namespace):
+    loaded = load_utah_data(args.data_file)
+    examples = build_utah_cycle_examples(
+        loaded,
+        min_cycle_length=args.min_cycle_length,
+        max_cycle_length=args.max_cycle_length,
+    )
+    feature_table = build_feature_table(examples, {})
+    summary = summarize_utah_data(
+        loaded,
+        examples,
+        min_cycle_length=args.min_cycle_length,
+        max_cycle_length=args.max_cycle_length,
+    )
+    return loaded, examples, feature_table, summary
+
+
 def inspect_command(args: argparse.Namespace) -> None:
     _, examples, _, summary = _load_and_build(args)
     _print_summary(summary)
@@ -60,7 +91,27 @@ def inspect_command(args: argparse.Namespace) -> None:
         print(f"  min={min(counts.values())}, median={sorted(counts.values())[len(counts)//2]}, max={max(counts.values())}")
 
 
-def evaluate_command(args: argparse.Namespace) -> None:
+def inspect_utah_command(args: argparse.Namespace) -> None:
+    _, examples, _, summary = _load_utah_and_build(args)
+    _print_summary(summary)
+    counts = count_by_participant(examples)
+    if counts:
+        print("Eligible examples per participant:")
+        print(
+            f"  min={min(counts.values())}, "
+            f"median={sorted(counts.values())[len(counts)//2]}, max={max(counts.values())}"
+        )
+
+
+def download_utah_command(args: argparse.Namespace) -> None:
+    paths = download_utah_data(args.destination, overwrite=args.overwrite)
+    print(f"Downloaded official Utah dataset record: {UTAH_RECORD_URL}")
+    for path in paths:
+        print(f"  - {path}")
+    print("The destination is ignored by git; review the dataset's CC BY-NC license before use.")
+
+
+def _evaluate_and_save(feature_table, summary: dict, output_dir: Path):
     from src.evaluate import evaluate_feature_table, write_csv
     from src.plots import (
         save_delta_mae_vs_history,
@@ -71,11 +122,9 @@ def evaluate_command(args: argparse.Namespace) -> None:
         save_target_distribution,
     )
 
-    _, examples, feature_table, summary = _load_and_build(args)
     _print_summary(summary)
     print(f"Feature variables used: {feature_table.variables_used}")
     scores, fold_scores, predictions = evaluate_feature_table(feature_table)
-    output_dir = Path(args.output_dir)
     write_csv(output_dir / "scores.csv", scores)
     write_csv(output_dir / "fold_scores.csv", fold_scores)
     write_csv(output_dir / "predictions.csv", predictions)
@@ -100,10 +149,57 @@ def evaluate_command(args: argparse.Namespace) -> None:
             f"delta_vs_history={float(row['delta_mae_vs_history']):+.3f}, "
             f"within_7_days={float(row['within_7_days_pct']):.1f}%"
         )
+    return scores, fold_scores, predictions, aggregate_summary
+
+
+def evaluate_command(args: argparse.Namespace) -> None:
+    _, examples, feature_table, summary = _load_and_build(args)
+    _evaluate_and_save(feature_table, summary, Path(args.output_dir))
+
+
+def evaluate_utah_command(args: argparse.Namespace) -> None:
+    _, _, feature_table, summary = _load_utah_and_build(args)
+    _evaluate_and_save(feature_table, summary, Path(args.output_dir))
+
+
+def evaluate_all_command(args: argparse.Namespace) -> None:
+    from src.evaluate import write_csv
+
+    root = Path(args.output_dir)
+    _, _, mcphases_features, mcphases_summary = _load_and_build(args)
+    mcphases_scores, mcphases_folds, _, mcphases_aggregate = _evaluate_and_save(
+        mcphases_features, mcphases_summary, root / "mcphases"
+    )
+    _, _, utah_features, utah_summary = _load_utah_and_build(args)
+    utah_scores, utah_folds, _, utah_aggregate = _evaluate_and_save(
+        utah_features, utah_summary, root / "utah"
+    )
+
+    cohort_scores = add_cohort(mcphases_scores, "mcphases") + add_cohort(
+        utah_scores, "utah_cycle_length"
+    )
+    cohort_folds = add_cohort(mcphases_folds, "mcphases") + add_cohort(
+        utah_folds, "utah_cycle_length"
+    )
+    macro_scores = build_macro_scores(cohort_scores)
+    write_csv(root / "cohort_scores.csv", cohort_scores)
+    write_csv(root / "cohort_fold_scores.csv", cohort_folds)
+    write_csv(root / "macro_scores.csv", macro_scores)
+    write_json(
+        root / "multicohort_summary.json",
+        {
+            "benchmark": "mcPHASES CycleBench",
+            "protocol_version": "2.1",
+            "comparison": "Independent within-cohort participant-disjoint evaluation; models are not pooled across cohorts.",
+            "cohorts": [mcphases_aggregate, utah_aggregate],
+            "macro_scores": macro_scores,
+        },
+    )
+    print(f"Saved cross-cohort aggregate tables to {root.resolve()}")
 
 
 def export_public_command(args: argparse.Namespace) -> None:
-    source = Path(args.results_dir) / "benchmark_summary.json"
+    source = Path(args.results_dir) / args.summary_file
     payload = load_aggregate_summary(source)
     write_json(args.output_file, payload)
     print(f"Saved privacy-checked aggregate artifact to {Path(args.output_file).resolve()}")
@@ -148,6 +244,33 @@ def build_parser() -> argparse.ArgumentParser:
     evaluate.add_argument("--data-dir", required=True)
     evaluate.set_defaults(func=evaluate_command)
 
+    download_utah = subparsers.add_parser(
+        "download-utah",
+        help="Download the public Utah cycle-length dataset to an ignored local directory.",
+    )
+    download_utah.add_argument("--destination", default="external_data/utah")
+    download_utah.add_argument("--overwrite", action="store_true")
+    download_utah.set_defaults(func=download_utah_command)
+
+    inspect_utah = subparsers.add_parser(
+        "inspect-utah", help="Inspect the local Utah cycle-length dataset and eligible pairs."
+    )
+    inspect_utah.add_argument("--data-file", default="external_data/utah")
+    inspect_utah.set_defaults(func=inspect_utah_command)
+
+    evaluate_utah = subparsers.add_parser(
+        "evaluate-utah", help="Run the participant-disjoint history benchmark on Utah data."
+    )
+    evaluate_utah.add_argument("--data-file", default="external_data/utah")
+    evaluate_utah.set_defaults(func=evaluate_utah_command)
+
+    evaluate_all = subparsers.add_parser(
+        "evaluate-all", help="Evaluate mcPHASES and Utah independently and compare aggregate scores."
+    )
+    evaluate_all.add_argument("--data-dir", required=True, help="Local mcPHASES release directory.")
+    evaluate_all.add_argument("--data-file", default="external_data/utah", help="Utah CSV or directory.")
+    evaluate_all.set_defaults(func=evaluate_all_command)
+
     summarize = subparsers.add_parser(
         "summarize",
         help="Use OpenAI to interpret aggregate benchmark_summary.json only.",
@@ -162,6 +285,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="Export a validated aggregate summary for static publication.",
     )
     export_public.add_argument("--results-dir", default="results")
+    export_public.add_argument("--summary-file", default="benchmark_summary.json")
     export_public.add_argument("--output-file", default="docs/data/benchmark_summary.json")
     export_public.set_defaults(func=export_public_command)
     return parser
