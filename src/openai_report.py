@@ -9,6 +9,7 @@ from .report import assert_aggregate_payload_safe
 
 
 DEFAULT_OPENAI_MODEL = "gpt-5.6-terra"
+DEFAULT_MAX_OUTPUT_TOKENS = 4000
 
 REPORT_SCHEMA = {
     "type": "object",
@@ -45,6 +46,7 @@ def load_aggregate_summary(path: str | Path) -> dict[str, Any]:
 def summarize_with_openai(
     payload: dict[str, Any],
     model: str = DEFAULT_OPENAI_MODEL,
+    max_output_tokens: int = DEFAULT_MAX_OUTPUT_TOKENS,
     client: Any | None = None,
 ) -> dict[str, Any]:
     assert_aggregate_payload_safe(payload)
@@ -60,7 +62,8 @@ def summarize_with_openai(
     response = client.responses.create(
         model=model,
         store=False,
-        max_output_tokens=1400,
+        max_output_tokens=max_output_tokens,
+        reasoning={"effort": "low"},
         instructions=(
             "You are a cautious scientific benchmark analyst. Interpret only the supplied aggregate metrics. "
             "Do not make diagnostic, fertility, treatment, causal, or participant-level claims. Distinguish a "
@@ -69,6 +72,7 @@ def summarize_with_openai(
         ),
         input=json.dumps(payload, sort_keys=True, allow_nan=False),
         text={
+            "verbosity": "low",
             "format": {
                 "type": "json_schema",
                 "name": "cyclebench_report",
@@ -77,12 +81,38 @@ def summarize_with_openai(
             }
         },
     )
-    parsed = json.loads(response.output_text)
+    status = getattr(response, "status", None)
+    if status not in (None, "completed"):
+        details = getattr(response, "incomplete_details", None)
+        if hasattr(details, "model_dump"):
+            details = details.model_dump()
+        if isinstance(details, dict):
+            reason = details.get("reason", "unknown")
+        else:
+            reason = getattr(details, "reason", "unknown")
+        raise RuntimeError(
+            f"OpenAI response did not complete (status={status}, reason={reason}, "
+            f"max_output_tokens={max_output_tokens})."
+        )
+
+    output_text = getattr(response, "output_text", "")
+    if not output_text:
+        raise RuntimeError("OpenAI returned no structured report text.")
+    try:
+        parsed = json.loads(output_text)
+    except json.JSONDecodeError as exc:
+        request_id = getattr(response, "_request_id", None)
+        request_suffix = f" Request ID: {request_id}." if request_id else ""
+        raise RuntimeError(
+            f"OpenAI returned malformed structured output at character {exc.pos}."
+            f"{request_suffix}"
+        ) from exc
     usage = getattr(response, "usage", None)
     if usage is not None and hasattr(usage, "model_dump"):
         usage = usage.model_dump()
     result = {
         "model": model,
+        "max_output_tokens": max_output_tokens,
         "request_id": getattr(response, "_request_id", None),
         "usage": usage,
         "report": parsed,

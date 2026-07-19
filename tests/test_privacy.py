@@ -20,6 +20,7 @@ class _FakeResponse:
         }
     )
     _request_id = "req_test"
+    status = "completed"
 
 
 class _FakeResponses:
@@ -36,6 +37,25 @@ class _FakeClient:
         self.responses = _FakeResponses()
 
 
+class _FakeIncompleteResponse:
+    output_text = '{"title":"truncated'
+    _request_id = "req_incomplete"
+    status = "incomplete"
+    incomplete_details = {"reason": "max_output_tokens"}
+
+
+class _FakeMalformedResponse:
+    output_text = '{"title":"truncated'
+    _request_id = "req_malformed"
+    status = "completed"
+
+
+class _FakeSingleResponseClient:
+    def __init__(self, response) -> None:
+        self.responses = _FakeResponses()
+        self.responses.create = lambda **kwargs: response
+
+
 class PrivacyTests(unittest.TestCase):
     def test_aggregate_payload_rejects_participant_fields(self) -> None:
         with self.assertRaisesRegex(ValueError, "Participant-level field"):
@@ -49,6 +69,18 @@ class PrivacyTests(unittest.TestCase):
         self.assertIs(client.responses.arguments["store"], False)
         self.assertEqual(json.loads(client.responses.arguments["input"]), payload)
         self.assertNotIn("participant_id", client.responses.arguments["input"])
+
+    def test_openai_summary_reports_incomplete_response_before_json_parsing(self) -> None:
+        payload = {"benchmark": "CycleBench"}
+        client = _FakeSingleResponseClient(_FakeIncompleteResponse())
+        with self.assertRaisesRegex(RuntimeError, "status=incomplete, reason=max_output_tokens"):
+            summarize_with_openai(payload, client=client)
+
+    def test_openai_summary_reports_malformed_structured_output(self) -> None:
+        payload = {"benchmark": "CycleBench"}
+        client = _FakeSingleResponseClient(_FakeMalformedResponse())
+        with self.assertRaisesRegex(RuntimeError, "malformed structured output.*req_malformed"):
+            summarize_with_openai(payload, client=client)
 
 
 if __name__ == "__main__":

@@ -188,9 +188,10 @@ python run_benchmark.py summarize --results-dir results
 ```
 
 The default model is `gpt-5.6-terra`; override it with `--model`. The request
-uses Structured Outputs and `store=False`. It reads only the validated
-aggregate summary and never uploads raw mcPHASES data or participant-level
-predictions.
+uses Structured Outputs, low reasoning effort, and `store=False`. It reads only
+the validated aggregate summary and never uploads raw mcPHASES data or
+participant-level predictions. The default output budget is 4,000 tokens; use
+`--max-output-tokens` to override it.
 
 ## Limitations
 

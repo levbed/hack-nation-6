@@ -13,7 +13,13 @@ from src.data import (
     summarize_loaded_data,
 )
 from src.features import build_feature_table
-from src.openai_report import DEFAULT_OPENAI_MODEL, load_aggregate_summary, summarize_with_openai, write_openai_outputs
+from src.openai_report import (
+    DEFAULT_MAX_OUTPUT_TOKENS,
+    DEFAULT_OPENAI_MODEL,
+    load_aggregate_summary,
+    summarize_with_openai,
+    write_openai_outputs,
+)
 from src.report import build_benchmark_summary, write_json, write_markdown_report
 
 
@@ -107,7 +113,11 @@ def summarize_command(args: argparse.Namespace) -> None:
     results_dir = Path(args.results_dir)
     payload = load_aggregate_summary(results_dir / "benchmark_summary.json")
     try:
-        result = summarize_with_openai(payload, model=args.model)
+        result = summarize_with_openai(
+            payload,
+            model=args.model,
+            max_output_tokens=args.max_output_tokens,
+        )
     except Exception as exc:
         raise RuntimeError(f"OpenAI summary failed: {exc}") from exc
     write_openai_outputs(
@@ -144,6 +154,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     summarize.add_argument("--results-dir", default="results")
     summarize.add_argument("--model", default=DEFAULT_OPENAI_MODEL)
+    summarize.add_argument("--max-output-tokens", type=int, default=DEFAULT_MAX_OUTPUT_TOKENS)
     summarize.set_defaults(func=summarize_command)
 
     export_public = subparsers.add_parser(
